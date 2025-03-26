@@ -21,6 +21,11 @@ books = {
         "price": 499,
         "image_url": "https://im1.book.com.tw/image/getImage?i=https://www.books.com.tw/img/001/036/04/0010360466.jpg&v=62d695bak&w=348&h=348",
     },
+    4: {
+        "name": "寶可夢 大絕招",
+        "price": 1499,
+        "image_url": "https://tw.portal-pokemon.com/assets_c/2018/09/banner_650x488_pokedex-thumb-650x488-12636.jpg",
+    },
 }
 
 

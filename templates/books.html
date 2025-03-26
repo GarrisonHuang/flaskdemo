@@ -10,12 +10,40 @@
             background-color: antiquewhite;
             text-align: center
         }
+
+        .price {
+            background-color: blueviolet;
+            padding: 6px;
+            margin: 6px 0px;
+            color: white;
+        }
+
+        .bookname {
+            font-size: 20px;
+            font-weight: bold;
+            background-color: aqua;
+            width: 200px;
+            margin: 0 auto;
+            border-radius: 12px;
+            padding: 12px 0px;
+
+        }
+
+        .bookimage {
+            width: 250px;
+            border-radius: 12px;
+            border: 1px black solid;
+            padding: 6px 0px;
+            margin: 6px auto;
+            display: block;
+        }
     </style>
 
 </head>
 
 <body>
     <h1>目前書籍</h1>
+    <hr>
     <!-- {{books}} -->
 
     {% for key in books %}
@@ -23,8 +51,10 @@
     <h2 class="bookname">{{books[key].name}}</h2>
     <div class="price">NT:{{books[key].price}}</div>
     <!-- 輸出圖片連結 -->
-    <img src="{{books[key].image_url}}" alt=""></li>
-    <br>
+    <img class="bookimage" src="{{books[key].image_url}}" alt=""></li>
+
+    <button>購買</button>
+    <hr>
     {% endfor %}
 </body>
 
