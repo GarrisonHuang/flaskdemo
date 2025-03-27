@@ -1,5 +1,7 @@
 from flask import Flask, render_template
 from datetime import datetime
+from scrape import scrape_stocks
+
 
 # print(__name__)
 
@@ -29,6 +31,15 @@ books = {
 }
 
 
+@app.route("/stocks")
+def get_stocks():
+    datas = scrape_stocks()
+
+    for data in datas:
+        print(data[0], data[1])
+    return render_template("stocks.html", stocks=datas)
+
+
 @app.route("/bmi/name=<name>&height=<h>&weight=<w>")
 def get_bmi(name, h, w):
     try:
@@ -42,6 +53,7 @@ def get_bmi(name, h, w):
 
 @app.route("/sum/x=<x>&y=<y>")
 def my_sum(x, y):
+
     # 參數不正確 請輸出參數錯誤 (try + except)
     try:
         total = eval(x) + eval(y)
