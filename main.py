@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 from datetime import datetime
-from scrape import scrape_stocks
+from scrape import scrape_stocks, scrape_pm25
 
 
 # print(__name__)
@@ -29,6 +29,18 @@ books = {
         "image_url": "https://tw.portal-pokemon.com/assets_c/2018/09/banner_650x488_pokedex-thumb-650x488-12636.jpg",
     },
 }
+
+
+@app.route("/pm25")
+def get_pm25():
+    today = datetime.now()
+    columns, values = scrape_pm25()
+    data = {
+        "columns": columns,
+        "values": values,
+        "today": today.strftime("%Y/%m/%d %M:%H:%S"),
+    }
+    return render_template("pm25.html", data=data)
 
 
 @app.route("/stocks")
