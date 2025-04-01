@@ -31,23 +31,53 @@
                 width: 90%;
             }
         }
+
+        #reload-sec {
+            width: 50px;
+
+        }
+
+        .panel1 {
+            width: 200px;
+            margin: 0 auto;
+            background-color: orange;
+            padding: 6px;
+            border-radius: 3px;
+        }
+
+        button-style {
+            background-color: blueviolet;
+            border: 0;
+            width: 50px;
+            border-radius: 3px;
+        }
+
+        form {
+            margin: 12px 0px;
+        }
     </style>
 </head>
 
 <body>
     <h1>全省PM2.5資訊</h1>
-    <h3 style="color:blue">目前時間:<u style="color:cornflowerblue">{{data["today"]}}</u></h3>
+    <h3 style="color:blue">目前時間:<u>{{data["today"]}}</u></h3>
     <a href="/">回首頁</a>
     <a href="">重新讀取</a>
 
-    <form action="" method="POST">
-        <select name="sort" id="sort">
-            <option value="true">升</option>
-            <option value="false">降</option>
-        </select>
-        <button type="submit">排序</button>
+    <div class="panel1">
+        <input type="checkbox" name="" id="check-reload">
+        開啟
+        <input name="" id="reload-sec" type="number" value="30">秒數
+        <form action="" method="POST">
+            <select name="sort" id="sort">
+                <option value="true">升</option>
+                <option value="false">降</option>
+            </select>
+            <button class="button-style" type="submit">排序</button>
 
-    </form>
+        </form>
+    </div>
+
     <table border="1">
         <thead>
             <tr>
@@ -69,6 +99,48 @@
     </table>
     <!-- {{data["columns"]}} -->
     <!-- {{data["values"]}} -->
+    <script>
+        // 自動更新
+        const checkReload = document.querySelector("#check-reload");
+        const reloadSecond = document.querySelector("#reload-sec");
+        const delaySecond = 30;
+        reloadSecond.value = delaySecond;
+
+        window.onload = function () {
+
+            console.log("reload!");
+            checkReload.checked = localStorage.getItem("CheckReload") ? true : false
+            reloadSecond.value = localStorage.getItem("ReloadSecond") ? localStorage.getItem("ReloadSecond")
+                : delaySecond;
+
+            if (checkReload.checked) {
+                console.log("start reload!");
+                let sec = Number(reloadSecond.value) * 1000;
+                setInterval((() => {
+                    window.location.reload();
+                }), sec);
+            }
+        };
+
+        checkReload.addEventListener("change", () => {
+            //儲存
+            localStorage.setItem("CheckReload", checkReload.checked);
+            localStorage.setItem("ReloadSecond", reloadSecond.value);
+            SetUpdateInterval();
+        });
+
+        function SetUpdateInterval() {
+            if (checkReload.checked) {
+                console.log("start reload!");
+                let sec = Number(reloadSecond.value) * 1000;
+                setInterval((() => {
+                    window.location.reload();
+                }), sec);
+            }
+        }
+
+
+    </script>
 </body>
 
 </html>
