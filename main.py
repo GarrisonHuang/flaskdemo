@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 from datetime import datetime
-from scrape import scrape_stocks, scrape_pm25
-
+from scrape import scrape_stocks, scrape_pm25, get_pm25_json
+import json
 
 # print(__name__)
 
@@ -29,6 +29,21 @@ books = {
         "image_url": "https://tw.portal-pokemon.com/assets_c/2018/09/banner_650x488_pokedex-thumb-650x488-12636.jpg",
     },
 }
+
+
+@app.route("/pm25-chart")
+def pm25_chart():
+    return render_template("pm25-chart.html")
+
+
+@app.route("/pm25-data")
+def pm25_data():
+    try:
+        json_data = get_pm25_json()
+        return json.dumps(json_data, ensure_ascii=False)
+    except Exception as e:
+        print(e)
+        return json.dumps({"result": "failure", "exception": str(e)})
 
 
 @app.route("/pm25", methods=["GET", "POST"])

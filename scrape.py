@@ -1,10 +1,35 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
+import numpy as np
+
+url = "https://data.moenv.gov.tw/api/v2/aqx_p_02?api_key=9e565f9a-84dd-4e79-9097-d403cae1ea75&limit=1000&sort=datacreationdate desc&format=JSON"
+
+
+def get_pm25_json():
+    columns, values = scrape_pm25()
+
+    xdata = [value[0] for value in values]
+    ydata = [
+        None if pd.isna(value[2]) else value[2] for value in values
+    ]  # ✅ 把 NaN 換成 None
+
+    json_data = {"site": xdata, "pm25": ydata}
+    return json_data
+
+
+# def get_pm25_json():
+# columns, values = scrape_pm25()
+
+# xdata = [value[0] for value in values]
+# ydata = [value[2] for value in values]
+
+# json_data = {"site": xdata, "pm25": ydata}
+
+# return json_data
 
 
 def scrape_pm25(sort=False, ascending=True):
-    url = "https://data.moenv.gov.tw/api/v2/aqx_p_02?api_key=9e565f9a-84dd-4e79-9097-d403cae1ea75&limit=1000&sort=datacreationdate desc&format=JSON"
     try:
         datas = requests.get(url).json()["records"]
         df = pd.DataFrame(datas)
@@ -13,6 +38,7 @@ def scrape_pm25(sort=False, ascending=True):
         )
         if sort:
             df = df.sort_values("pm25", ascending=ascending)
+
         columns = df.columns
         values = df.values
 
@@ -48,4 +74,5 @@ def scrape_stocks():
 
 if __name__ == "__main__":
     # print(scrape_stocks())
-    print(scrape_pm25(sort=True, ascending=False))
+    # print(scrape_pm25(sort=True, ascending=False))
+    print(get_pm25_json())
