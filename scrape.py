@@ -6,36 +6,47 @@ import numpy as np
 url = "https://data.moenv.gov.tw/api/v2/aqx_p_02?api_key=9e565f9a-84dd-4e79-9097-d403cae1ea75&limit=1000&sort=datacreationdate desc&format=JSON"
 
 
+# def get_pm25_json():
+#    columns, values = scrape_pm25()
+
+#    xdata = [value[0] for value in values]
+#    ydata = [
+#        None if pd.isna(value[2]) else value[2] for value in values
+#    ]  # ✅ 把 NaN 換成 None
+
+#    json_data = {"site": xdata, "pm25": ydata}
+#    return json_data
+
+
 def get_pm25_json():
     columns, values = scrape_pm25()
 
     xdata = [value[0] for value in values]
-    ydata = [
-        None if pd.isna(value[2]) else value[2] for value in values
-    ]  # ✅ 把 NaN 換成 None
+    ydata = [value[2] for value in values]
 
     json_data = {"site": xdata, "pm25": ydata}
+
     return json_data
 
 
-# def get_pm25_json():
-# columns, values = scrape_pm25()
-
-# xdata = [value[0] for value in values]
-# ydata = [value[2] for value in values]
-
-# json_data = {"site": xdata, "pm25": ydata}
-
-# return json_data
+def convert_value(value):
+    try:
+        return eval(value)
+    except:
+        return None
 
 
 def scrape_pm25(sort=False, ascending=True):
     try:
         datas = requests.get(url).json()["records"]
         df = pd.DataFrame(datas)
-        df["pm25"] = df["pm25"].apply(
-            lambda x: eval(str(x)) if str(x).isdigit() else None
-        )
+        # 將非正常數值轉換成None
+        df["pm25"] = df["pm25"].apply(convert_value)
+        # df["pm25"] = df["pm25"].apply(
+        # lambda x: eval(str(x)) if str(x).isdigit() else None
+        # )
+        # 移除有None 的數據
+        df = df.dropna()
         if sort:
             df = df.sort_values("pm25", ascending=ascending)
 
