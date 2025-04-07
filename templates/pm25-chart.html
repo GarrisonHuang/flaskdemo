@@ -20,7 +20,7 @@
     <script>
 
         $.ajax({
-            url: "/pm25-data",
+            url: "/six-pm25-data",
             type: "GET",
             dataType: "json",
             success: (data) => {
@@ -28,6 +28,7 @@
 
                 // 呼叫 drawChart，把資料畫出來！
                 drawChart(myChart, data.site, data.pm25, "全省 PM2.5 數據", "PM2.5");
+                //drawChart(chart1, data["site"], data["pm25"], title = "全省 PM2.5 數據");
             },
             error: (xhr, status, err) => {
                 console.log("讀取失敗", err);
