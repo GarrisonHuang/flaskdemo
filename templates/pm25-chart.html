@@ -7,7 +7,23 @@
     <title>PM25-Chart</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.6.0/echarts.min.js"></script>
+    <style>
+        .higher {
+            background-color: rgb(162, 91, 91);
+            width: 200px;
+            text-align: center;
+            color: white;
+            font-size: 24px
+        }
 
+        .lower {
+            background-color: rgb(154, 204, 154);
+            width: 200px;
+            text-align: center;
+            color: white;
+            font-size: 24px
+        }
+    </style>
 </head>
 
 <!-- https://echarts.apache.org/ -->
@@ -15,11 +31,19 @@
 <body>
     <a href="/">回首頁</a>
 
-    <div id="highestSite">最高:</div>
-    <div id="highestPm25">最高數值:</div>
-    <div id="lowestSite">最低:</div>
-    <div id="lowestPm25">最低數值:</div>
+    <div class="higher">
+        最高:<span id="highestSite"></span>
+        <span id="highestPm25"></span>
+    </div>
+    <!-- <div id="highestPm25">最高數值:</div> -->
 
+    <div class="lower">
+        最低:<span id="lowestSite"></span>
+        <span id="lowestPm25"></span>
+    </div>
+    <!-- <div id=>最低數值:</div> -->
+
+    <a href="">更新數據</a>
     <h1>PM2.5圖形繪製</h1>
     <div id="main" style="width: 100%; height: 400px;"></div>
     <div id="six" style="width: 100%; height: 400px;"></div>
@@ -30,6 +54,11 @@
         // 基于准备好的dom，初始化echarts实例
         const chart1 = echarts.init(document.getElementById('main'));
         const chart2 = echarts.init(document.getElementById('six'));
+
+        window.addEventListener("resize", () => {
+            chart1.resize();
+            chart2.resize();
+        });
 
         $.ajax({
             url: "/pm25-data",
