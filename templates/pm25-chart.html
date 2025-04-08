@@ -15,6 +15,11 @@
 <body>
     <a href="/">回首頁</a>
 
+    <div id="highestSite">最高:</div>
+    <div id="highestPm25">最高數值:</div>
+    <div id="lowestSite">最低:</div>
+    <div id="lowestPm25">最低數值:</div>
+
     <h1>PM2.5圖形繪製</h1>
     <div id="main" style="width: 100%; height: 400px;"></div>
     <div id="six" style="width: 100%; height: 400px;"></div>
@@ -23,8 +28,8 @@
         //$("h1").text("<u>ABC</u>");
         $("h1").css("text-align", "center");
         // 基于准备好的dom，初始化echarts实例
-        var chart1 = echarts.init(document.getElementById('main'));
-        var chart2 = echarts.init(document.getElementById('six'));
+        const chart1 = echarts.init(document.getElementById('main'));
+        const chart2 = echarts.init(document.getElementById('six'));
 
         $.ajax({
             url: "/pm25-data",
@@ -37,6 +42,11 @@
                 // 呼叫 drawChart，把資料畫出來！
                 //drawChart(myChart, data.site, data.pm25, "全省 PM2.5 數據", "PM2.5");
                 drawChart(chart1, data["site"], data["pm25"], title = "全省 PM2.5 數據", "pm2.5");
+
+                $("#highestSite").text(data["highest"][0]);
+                $("#highestPm25").text(data["highest"][1]);
+                $("#lowestSite").text(data["lowest"][0]);
+                $("#lowestPm25").text(data["lowest"][1]);
             },
             error: (xhr, status, err) => {
                 console.log("讀取失敗", err);
