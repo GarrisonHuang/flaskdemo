@@ -142,4 +142,5 @@ def index():
     return render_template("index.html", date=today, name=name)
 
 
-app.run(debug=True)  # 這句可以不用關server
+app.run(host="0.0.0.0")
+# app.run(debug=True)  # 這句可以不用關server
